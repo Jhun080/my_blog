@@ -1,0 +1,22 @@
+html {
+    /* background: url(../img/pages/backgroundpc.jpg); */
+    background-image: url(../img/backgrounp.png);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-attachment: fixed;
+    font-family: web-font;
+    height: 100%;
+}
+
+body {
+    /* height: 100%; */
+    width: 100%;
+    margin: 0;
+    /* background-color: bisque; */
+    
+}
+
+*{
+    margin: 0;
+    padding: 0;
+}
