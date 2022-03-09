@@ -6,13 +6,15 @@
     </div>
     <!-- 内容部分 -->
     <div class="main-content">
-      <el-row :gutter="10">
+      <el-row :gutter="1">
         <!-- 根据路由显示的内容 -->
-        <el-col :span="18">
+        <el-col :span="16">
           <Home></Home>
         </el-col>
         <!-- 固定部分 标签分类、专栏…………-->
-        <el-col :span="6"> 未完成 </el-col>
+        <el-col :span="8">
+          <Sidebar></Sidebar>
+        </el-col>
       </el-row>
     </div>
   </div>
@@ -21,6 +23,7 @@
 <script>
 import Header from '@/components/Header'
 import Home from '@/views/Home/Home.vue'
+import Sidebar from '@/views/Sidebar/Sidebar.vue'
 
 export default {
   data () {
@@ -28,7 +31,8 @@ export default {
   },
   components: {
     Header,
-    Home
+    Home,
+    Sidebar
   }
 }
 </script>
@@ -38,9 +42,8 @@ export default {
 }
 .main-content {
   margin-top: 80px;
-  .el-row{
+  .el-row {
     margin: 0px !important;
   }
 }
-
 </style>

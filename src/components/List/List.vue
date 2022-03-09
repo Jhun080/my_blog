@@ -53,10 +53,10 @@ export default {
   position: relative;
   opacity: 0.9;
   img {
-    margin: 15px 0px 0px 5px;
+    border-radius: 20px;
   }
   .list-icon {
-    width: 100%;
+    height: 100%;
   }
   .list-date {
     font-size: 14px;
