@@ -6,8 +6,13 @@
         <!-- 导航栏 -->
         <div class="header-left">
           <ul>
-            <li class="active"><i class="el-icon-s-shop"></i>首页</li>
-            <li><i class="el-icon-s-order"></i>归档</li>
+            <li>
+              <router-link to="/">
+                <i class="el-icon-s-shop"></i>
+                首页
+              </router-link>
+            </li>
+            <li class="active"><i class="el-icon-s-order"></i>归档</li>
             <li><i class="el-icon-s-comment"></i>留言</li>
             <li><i class="el-icon-user-solid"></i>关于</li>
             <li><i class="el-icon-s-help"></i>占位</li>
@@ -49,8 +54,7 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-header{
-
+header {
 }
 .header {
   position: fixed;
@@ -87,7 +91,6 @@ header{
       border: 0;
       height: 30px;
     }
-
   }
 }
 </style>

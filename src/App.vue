@@ -8,8 +8,8 @@
     <div class="main-content">
       <el-row :gutter="1">
         <!-- 根据路由显示的内容 -->
-        <el-col :span="16">
-          <Home></Home>
+        <el-col :span="16" class="col-left">
+          <router-view></router-view>
         </el-col>
         <!-- 固定部分 标签分类、专栏…………-->
         <el-col :span="8">
@@ -22,8 +22,9 @@
 
 <script>
 import Header from '@/components/Header'
-import Home from '@/views/Home/Home.vue'
+// import Home from '@/views/Home/Home.vue'
 import Sidebar from '@/views/Sidebar/Sidebar.vue'
+// import Detail from '@/views/Detail/Detail.vue'
 
 export default {
   data () {
@@ -31,8 +32,9 @@ export default {
   },
   components: {
     Header,
-    Home,
+    // Home,
     Sidebar
+    // Detail
   }
 }
 </script>
@@ -42,8 +44,14 @@ export default {
 }
 .main-content {
   margin-top: 80px;
+
   .el-row {
     margin: 0px !important;
+  }
+
+  .col-left{
+    display: flex;
+    justify-content: center;
   }
 }
 </style>

@@ -11,20 +11,20 @@
       <!-- 简介区 -->
       <el-col :span="18">
         <!-- 置顶标记 -->
-        <div class="list-title">
+        <div class="list-title" @click="findDetail">
           <span class="top active">置顶</span>
           <!-- 标题 -->
-          <span>标题</span>
+          <span>二分查找</span>
         </div>
         <!-- 内容-->
         <div class="list-content">
-          &emsp;&emsp;摘要: java学习java学习java学习java学习java学习java学习java学习java学习java学习java学习java学习java学习java学习java学习java学习java学习java学习java学习
+          &emsp;&emsp;摘要: 不断地将排序好的数组进行二分，逐步缩小范围，直到找到元素或找不到该元素为止。
         </div>
         <!-- 分类、浏览信息 -->
         <div class="list-detail">
           <div style="margin-right:100px">
-            <span style="margin-right:20px">JS</span>
-            <span style="margin-right:20px">Java</span>
+            <span style="margin-right:20px">算法</span>
+            <span style="margin-right:20px">LeetCode</span>
           </div>
           <div>
             浏览(10)留言(10)
@@ -37,7 +37,18 @@
 
 <script>
 export default {
-  name: 'List'
+  name: 'List',
+  data () {
+    return {
+
+    }
+  },
+  methods: {
+    // 跳转至文章详情
+    findDetail (articleId = 114514) {
+      this.$router.push(`/detail/${articleId}`)
+    }
+  }
 }
 </script>
 
@@ -66,6 +77,8 @@ export default {
     text-align: center;
     font-size: 18px;
     margin: 15px 0px 10px 0px;
+    cursor: pointer;
+
     .top{
       margin-right: 10px;
       color: red;
