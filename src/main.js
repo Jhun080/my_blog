@@ -11,6 +11,23 @@ import 'element-ui/lib/theme-chalk/index.css'
 import 'github-markdown-css/github-markdown.css'
 import 'highlight.js/styles/github.css'
 
+// axios
+import axios from 'axios'
+
+// dayjs
+import dayjs from 'dayjs'
+const $axios = axios.create({
+  // baseURL: 'http://localhost:9615/api'
+  baseURL: 'http://101.42.111.16:9615/api'
+})
+Vue.prototype.$axios = $axios
+const $axiosQiNiu = axios.create({
+  baseURL: 'http://cdn-typora-articles.huecmx.xyz'
+})
+Vue.prototype.$axiosQiNiu = $axiosQiNiu
+
+Vue.prototype.$dayjs = dayjs
+
 Vue.use(ElementUI)
 
 Vue.config.productionTip = false

@@ -6,15 +6,15 @@
       <!-- 图片区 -->
       <el-col :span="6">
         <img src="@/assets/List/404.png" class="list-icon" />
-        <div class="list-date">2022-08-19 15:14</div>
+        <div class="list-date">{{ createTime }}</div>
       </el-col>
       <!-- 简介区 -->
       <el-col :span="18">
         <!-- 置顶标记 -->
-        <div class="list-title" @click="findDetail">
+        <div class="list-title" @click="findDetail(article.article_url)">
           <span class="top active">置顶</span>
           <!-- 标题 -->
-          <span>二分查找</span>
+          <span>{{ article.article_title }}</span>
         </div>
         <!-- 内容-->
         <div class="list-content">
@@ -27,7 +27,7 @@
             <span style="margin-right:20px">LeetCode</span>
           </div>
           <div>
-            浏览(10)留言(10)
+            浏览({{ article.article_view }})留言({{ article.article_comment }})
           </div>
         </div>
       </el-col>
@@ -38,15 +38,23 @@
 <script>
 export default {
   name: 'List',
+  props: ['article'],
   data () {
     return {
 
     }
   },
+  computed: {
+    // 文章创建时间
+    createTime () {
+      return this.$dayjs(this.article.article_createtime).format('YYYY-MM-DD HH:mm:ss')
+    }
+  },
   methods: {
     // 跳转至文章详情
-    findDetail (articleId = 114514) {
-      this.$router.push(`/detail/${articleId}`)
+    findDetail (articleURL) {
+      // console.log(articleId)
+      this.$router.push(`/detail?aricleURL=${articleURL}`)
     }
   }
 }

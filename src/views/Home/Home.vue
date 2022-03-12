@@ -2,15 +2,12 @@
 <template>
     <!-- 文章内容简介列表组 -->
     <div class="list-group">
-      <List>
-
+      <List
+        v-for="article in articleList"
+        :key="article.id"
+        :article="article"
+      >
       </List>
-      <List></List>
-      <List></List>
-      <List></List>
-      <List></List>
-      <List></List>
-      <List></List>
     </div>
 </template>
 
@@ -21,16 +18,22 @@ export default {
   name: 'Home',
   data () {
     return {
-      listData: [
-        {
-          title: '测试标题',
-          content: '&emsp;&emsp;测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试'
-        }
-      ]
+      // 文章列表数据
+      articleList: []
     }
   },
   components: {
     List
+  },
+  mounted () {
+    this.getAllArticle()
+  },
+  methods: {
+    // 获取所有文章
+    async getAllArticle () {
+      const result = await this.$axios.get('article/findAllArticle')
+      this.articleList = result.data
+    }
   }
 }
 </script>

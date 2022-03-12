@@ -63,7 +63,7 @@ header {
 
   display: flex;
   justify-content: space-around;
-  background-color: grey;
+  background-color: rgba(40,42,44,.6);
   color: white;
   width: 100vw;
   height: 40px;

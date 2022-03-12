@@ -10,21 +10,48 @@
 
 <script>
 // 引入marked
-import testmd from '@/md/二分查找.md'
-// const marked = require('marked')
 import { marked } from 'marked'
 
 export default {
   name: 'Detail',
+
   data () {
     return {
-      md: ''
+      md: '',
+      // 当前要读取的文件路径
+      // input: '二分查找.md'
+      input1: 'http://cdn-qiniu-cmxhealthspace1.huecmx.xyz/test/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE.md',
+      input2: 'http://cdn-qiniu-cmxhealthspace1.huecmx.xyz/test/闭包.md'
     }
   },
   mounted () {
     // 调用marked函数，传入markdown格式的内容，返回一段html
-    this.md = marked(testmd)
+    // this.md = marked(require(`@/md/${this.input}`))
+
+    // this.md = marked(testmd)
     // console.log(testmd)
+    // this.getMdFile('C:\\Users\\Jhun\\Desktop\\JS源码_课件\\原型与原型链.md')
+    // axios.get(this.input2).then((data) => {
+    //   this.md = marked(data.data)
+    //   // console.log(data)
+    // })
+    // 获取文章详情
+    this.getArticleDetail()
+  },
+  computed: {
+    // 网站地址
+    articleURL () {
+      return 'http://cdn-typora-articles.huecmx.xyz/' + this.$route.query.aricleURL
+    }
+  },
+  methods: {
+    // 获取文章详情
+    async getArticleDetail () {
+      const result = await this.$axiosQiNiu.get(this.articleURL)
+      if (result.status === 200) {
+        this.md = marked(result.data)
+      }
+    }
   }
 }
 </script>
