@@ -6,25 +6,30 @@
       <!-- 图片区 -->
       <el-col :span="6">
         <img src="@/assets/List/404.png" class="list-icon" />
+        <!-- 文章创建时间 -->
         <div class="list-date">{{ createTime }}</div>
       </el-col>
       <!-- 简介区 -->
       <el-col :span="18">
         <!-- 置顶标记 -->
         <div class="list-title" @click="findDetail(article.article_url)">
-          <span class="top active">置顶</span>
+          <span class="top active" v-if="article.istop==1">置顶</span>
           <!-- 标题 -->
           <span>{{ article.article_title }}</span>
         </div>
         <!-- 内容-->
         <div class="list-content">
-          &emsp;&emsp;摘要: 不断地将排序好的数组进行二分，逐步缩小范围，直到找到元素或找不到该元素为止。
+          &emsp;&emsp;摘要: {{ article.article_summary }}
         </div>
         <!-- 分类、浏览信息 -->
         <div class="list-detail">
           <div style="margin-right:100px">
-            <span style="margin-right:20px">算法</span>
-            <span style="margin-right:20px">LeetCode</span>
+            <span class="list-category"
+              v-for="category in article.classifications"
+              :key="category.category_id"
+            >
+              {{ category.classification.classification_name }}
+            </span>
           </div>
           <div>
             浏览({{ article.article_view }})留言({{ article.article_comment }})
@@ -47,13 +52,12 @@ export default {
   computed: {
     // 文章创建时间
     createTime () {
-      return this.$dayjs(this.article.article_createtime).format('YYYY-MM-DD HH:mm:ss')
+      return this.$dayjs(this.article.article_createtime).format('YYYY-MM-DD')
     }
   },
   methods: {
     // 跳转至文章详情
     findDetail (articleURL) {
-      // console.log(articleId)
       this.$router.push(`/detail?aricleURL=${articleURL}`)
     }
   }
@@ -108,8 +112,16 @@ export default {
     //justify-content: space-around;
     font-size: 14px;
     position: absolute;
-    bottom: 0px;
+    bottom: 2px;
     right: 30px;
+
+    .list-category{
+      margin-right:20px;
+      color: rgb(163,113,77);
+      padding: 0px 5px;
+      border: 2px solid rgb(163,113,77);
+      border-radius: 10%;
+    }
   }
 }
 </style>

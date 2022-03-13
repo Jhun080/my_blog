@@ -47,7 +47,11 @@ export default {
   methods: {
     // 获取文章详情
     async getArticleDetail () {
-      const result = await this.$axiosQiNiu.get(this.articleURL)
+      const result = await this.$axiosQiNiu.get(this.articleURL, {
+        params: {
+          timestamp: new Date().getTime()
+        }
+      })
       if (result.status === 200) {
         this.md = marked(result.data)
       }

@@ -4,7 +4,7 @@
     <div class="list-group">
       <List
         v-for="article in articleList"
-        :key="article.id"
+        :key="article.article_id"
         :article="article"
       >
       </List>
@@ -31,8 +31,10 @@ export default {
   methods: {
     // 获取所有文章
     async getAllArticle () {
-      const result = await this.$axios.get('article/findAllArticle')
-      this.articleList = result.data
+      const result = await this.$API.reqGetAllArticle()
+      if (result.code === 200) {
+        this.articleList = result.data
+      }
     }
   }
 }
