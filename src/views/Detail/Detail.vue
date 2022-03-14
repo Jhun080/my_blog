@@ -1,6 +1,6 @@
 <!-- 展示某个文章的详细内容 -->
 <template>
-  <div class="article">
+  <div class="article" v-loading.fullscreen.lock="fullscreenLoading">
     <div class="markdown-body">
       <!-- markdown容器 -->
       <div v-html="md"></div>
@@ -19,9 +19,8 @@ export default {
     return {
       md: '',
       // 当前要读取的文件路径
-      // input: '二分查找.md'
-      input1: 'http://cdn-qiniu-cmxhealthspace1.huecmx.xyz/test/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE.md',
-      input2: 'http://cdn-qiniu-cmxhealthspace1.huecmx.xyz/test/闭包.md'
+      fullscreenLoading: false
+
     }
   },
   mounted () {
@@ -47,6 +46,9 @@ export default {
   methods: {
     // 获取文章详情
     async getArticleDetail () {
+      // 开启页面加载
+      this.fullscreenLoading = true
+
       const result = await this.$axiosQiNiu.get(this.articleURL, {
         params: {
           timestamp: new Date().getTime()
@@ -55,6 +57,8 @@ export default {
       if (result.status === 200) {
         this.md = marked(result.data)
       }
+      // 解除页面加载
+      this.fullscreenLoading = false
     }
   }
 }
