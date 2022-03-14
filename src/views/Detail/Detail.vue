@@ -1,26 +1,25 @@
 <!-- 展示某个文章的详细内容 -->
 <template>
   <div class="article" v-loading.fullscreen.lock="fullscreenLoading">
-    <div class="markdown-body">
-      <!-- markdown容器 -->
-      <div v-html="md"></div>
-    </div>
+    <Md :mdData="mdData"></Md>
   </div>
 </template>
 
 <script>
 // 引入marked
-import { marked } from 'marked'
+// import { marked } from 'marked'
+import Md from './Md/Md.vue'
 
 export default {
   name: 'Detail',
-
+  components: {
+    Md
+  },
   data () {
     return {
-      md: '',
+      mdData: '',
       // 当前要读取的文件路径
       fullscreenLoading: false
-
     }
   },
   mounted () {
@@ -48,17 +47,17 @@ export default {
     async getArticleDetail () {
       // 开启页面加载
       this.fullscreenLoading = true
-
+      // 获取文章文件
       const result = await this.$axiosQiNiu.get(this.articleURL, {
         params: {
           timestamp: new Date().getTime()
         }
       })
       if (result.status === 200) {
-        this.md = marked(result.data)
+        this.mdData = result.data
       }
       // 解除页面加载
-      this.fullscreenLoading = false
+      // this.fullscreenLoading = false
     }
   }
 }
@@ -72,7 +71,6 @@ export default {
   border-radius: 20px;
   opacity: 1;
   .markdown-body {
-
   }
 }
 </style>
