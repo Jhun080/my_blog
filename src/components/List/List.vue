@@ -58,7 +58,7 @@ export default {
   methods: {
     // 跳转至文章详情
     findDetail (articleURL) {
-      this.$router.push(`/detail?aricleURL=${articleURL}`)
+      this.$router.push(`/main/detail?aricleURL=${articleURL}`)
     }
   }
 }
