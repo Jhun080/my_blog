@@ -1,5 +1,6 @@
 module.exports = {
   publicPath: './',
+  // publicPath: '/',
 
   chainWebpack: config => {
     config.module
