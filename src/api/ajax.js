@@ -14,7 +14,7 @@ import 'nprogress/nprogress.css'
 const requests = axios.create({
   // 配置
   baseURL: process.env.VUE_APP_BASE_API, // 基本路径前缀（自动匹配生产环境或开发环境）
-  // baseURL: 'http://101.42.111.16:9615/api',
+  // baseURL: 'https://101.42.111.16:9615/api',
   timeout: 5000 // 请求超时时间
 })
 // 请求拦截器：在请求发出前，做一些事情
