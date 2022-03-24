@@ -26,7 +26,7 @@ import * as API from '@/api/index.js'
 // })
 // Vue.prototype.$axios = $axios
 const $axiosQiNiu = axios.create({
-  baseURL: 'http://cdn-typora-articles.huecmx.xyz'
+  baseURL: 'https://cdn-typora-articles.huecmx.xyz'
 })
 Vue.prototype.$axiosQiNiu = $axiosQiNiu
 
@@ -38,6 +38,7 @@ Vue.config.productionTip = false
 new Vue({
   render: h => h(App),
   beforeCreate () {
+    Vue.prototype.$bus = this
     Vue.prototype.$API = API
   },
   router,
