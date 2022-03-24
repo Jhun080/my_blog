@@ -30,3 +30,43 @@ export const reqGetArticlePage = (params) => {
     data: params
   })
 }
+
+/*
+  获取服务器目录数据
+  /qiniu/getDirectory
+  get
+  参数：无
+*/
+export const reqGetDirectory = () => {
+  return requests({
+    url: '/qiniu/getDirectory',
+    method: 'get'
+  })
+}
+
+/*
+  获取分类标签数据
+  /classification/findAllClassification
+  get
+  参数：无
+*/
+export const reqGetClassification = () => {
+  return requests({
+    url: '/classification/findAllClassification',
+    method: 'get'
+  })
+}
+
+/*
+  //通过分类id分页查询文章
+  /article/findArticlePageByLabelId
+  get
+  参数：无
+*/
+export const reqArticlePageByLabelId = (params) => {
+  return requests({
+    url: '/article/findArticlePageByLabelId',
+    method: 'post',
+    data: params
+  })
+}
