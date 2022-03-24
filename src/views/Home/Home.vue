@@ -12,7 +12,7 @@
       <!--  -->
       <el-pagination
         :current-page="currentPage"
-        :page-sizes="[2, 3, 4]"
+        :page-sizes="pageSizes"
         :page-size="pageSize"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
@@ -32,8 +32,9 @@ export default {
       // 文章列表数据
       articleList: [],
       fullscreenLoading: false,
+      pageSizes: [5, 10], //
       currentPage: 1, // 当前页码
-      pageSize: 2, // 每页显示数据条数
+      pageSize: 5, // 每页显示数据条数
       total: 0, // 数据总条数
       query: ''// 查询条件
     }
@@ -44,6 +45,10 @@ export default {
   mounted () {
     // 分页查询文章数据
     this.getArticleData()
+    // 订阅事件：通过标签id查询文章
+    this.$bus.$on('getArticleDataByLabelId', (labelId) => {
+      this.getArticleDataByLabelId(labelId)
+    })
   },
   methods: {
     // 获取所有文章
@@ -59,6 +64,8 @@ export default {
     // },
     // 分页查询文章数据
     async getArticleData () {
+      // 开启页面加载效果
+      this.fullscreenLoading = true
       const result = await this.$API.reqGetArticlePage({
         currentPage: this.currentPage,
         pageSize: this.pageSize,
@@ -68,6 +75,22 @@ export default {
         this.articleList = result.data.rows
         this.total = result.data.total
       }
+      // 关闭页面加载效果
+      this.fullscreenLoading = false
+    },
+    // 通过分类id分页查询文章
+    async getArticleDataByLabelId (labelId) {
+      this.query = labelId
+      const result = await this.$API.reqArticlePageByLabelId({
+        currentPage: this.currentPage,
+        pageSize: this.pageSize,
+        query: this.query
+      })
+      if (result.code === 200) {
+        this.articleList = result.data.rows
+        this.total = result.data.total
+      }
+      this.query = ''
     },
     // 分页栏页码改变事件
     handleCurrentChange (val) {
