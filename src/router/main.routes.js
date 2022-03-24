@@ -17,6 +17,11 @@ export default {
       path: 'detail',
       name: 'Detail',
       component: () => import('@/views/Detail/Detail.vue')
+    },
+    {
+      path: 'archive',
+      name: 'Archive',
+      component: () => import('@/views/Archive/Archive.vue')
     }
   ]
 }
