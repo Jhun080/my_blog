@@ -10,17 +10,17 @@
     <div class="link-class">
       <div class="link-up">
         <el-tooltip class="item" effect="dark" content="GitHub" placement="top" style="cursor: pointer">
-          <div class="mini-icon">
+          <div class="mini-icon" @click="toGitHub">
             <img class="icon" src="@/assets/Sidebar/UserInfo/github.png" />
           </div>
         </el-tooltip>
         <el-tooltip class="item" effect="dark" content="QQ" placement="top" style="cursor: pointer">
-          <div class="mini-icon">
+          <div class="mini-icon" @click="toQQ">
             <img class="icon" src="@/assets/Sidebar/UserInfo/qq.png" />
           </div>
         </el-tooltip>
         <el-tooltip class="item" effect="dark" content="微信" placement="top" style="cursor: pointer">
-          <div class="mini-icon">
+          <div class="mini-icon" @click="toWeiXin">
             <img class="icon" src="@/assets/Sidebar/UserInfo/weixin.png" />
           </div>
         </el-tooltip>
@@ -31,8 +31,8 @@
             <img class="icon" src="@/assets/Sidebar/UserInfo/csdn.png" />
           </div>
         </el-tooltip>
-        <el-tooltip class="item" effect="dark" content="个人" placement="bottom" style="cursor: pointer">
-          <div class="mini-icon">
+        <el-tooltip class="item" effect="dark" content="简历" placement="bottom" style="cursor: pointer">
+          <div class="mini-icon" @click="toResume">
             <img class="icon" src="@/assets/Sidebar/UserInfo/info.png" />
           </div>
         </el-tooltip>
@@ -56,6 +56,24 @@ export default {
   name: 'UserInfo',
   data () {
     return {}
+  },
+  methods: {
+    // 跳转至GitHub
+    toGitHub () {
+      window.open('https://github.com/Jhun080')
+    },
+    // 跳转至QQ
+    toQQ () {
+      window.open('http://cdn-static-resource.huecmx.xyz/QQ.png')
+    },
+    // 跳转至微信
+    toWeiXin () {
+      window.open('http://cdn-static-resource.huecmx.xyz/weixin.jpg')
+    },
+    // 跳转至个人简历
+    toResume () {
+      window.open('http://cdn-static-resource.huecmx.xyz/个人简历.pdf')
+    }
   }
 }
 </script>
@@ -67,6 +85,7 @@ export default {
   height: 22vw;
   background-color: white;
   border-radius: 20px;
+  transition: all .5s;
 
   #bigImg {
     position: absolute;
@@ -120,7 +139,8 @@ export default {
 
 .info-nav:hover {
   //-webkit-transform: translateY(-2px);
-  transform: translateY(-2px);
+  transform: translate(2px,-2px);
+  transition: all .5s;
   //-webkit-box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
 }
