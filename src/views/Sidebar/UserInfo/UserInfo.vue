@@ -64,15 +64,15 @@ export default {
     },
     // 跳转至QQ
     toQQ () {
-      window.open('http://cdn-static-resource.huecmx.xyz/QQ.png')
+      window.open('http://cdn-blog-resource.huecmx.xyz/QQ.png')
     },
     // 跳转至微信
     toWeiXin () {
-      window.open('http://cdn-static-resource.huecmx.xyz/weixin.jpg')
+      window.open('http://cdn-blog-resource.huecmx.xyz/weixin.jpg')
     },
     // 跳转至个人简历
     toResume () {
-      window.open('http://cdn-static-resource.huecmx.xyz/个人简历.pdf')
+      window.open('http://cdn-blog-resource.huecmx.xyz/个人简历.pdf')
     }
   }
 }
