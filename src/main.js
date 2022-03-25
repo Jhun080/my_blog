@@ -18,13 +18,8 @@ import axios from 'axios'
 import dayjs from 'dayjs'
 
 // 统一接收api文件夹中的全部请求函数
-import * as API from '@/api/index.js'
+import API from '@/api/index.js'
 
-// const $axios = axios.create({
-//   // baseURL: 'http://localhost:9615/api'
-//   baseURL: 'http://101.42.111.16:9615/api'
-// })
-// Vue.prototype.$axios = $axios
 const $axiosQiNiu = axios.create({
   baseURL: 'https://cdn-typora-articles.huecmx.xyz'
 })
