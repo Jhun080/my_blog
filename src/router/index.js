@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import store from '@/store/index.js'
 
 Vue.use(VueRouter)
 
@@ -64,6 +65,47 @@ VueRouter.prototype.replace = function (location, resolve, reject) {
 const router = new VueRouter({
   // mode: 'history',
   routes
+})
+
+// 全局守卫：前置守卫（在路由跳转之前进行判断）
+router.beforeEach(async (to, from, next) => {
+  // to:可以获取到要跳转到的路由信息
+  // from:可以获取到正要离开的路由的信息
+  // next:放行函数 next()放行  next(path):放行到指定的路由
+  // next(false)重置到from路由对应的地址  next至少要执行一次
+
+  // 用户登录了才会有token，未登录不会有token
+  const token = store.state.user.token
+  // 用户信息:用户名
+  const username = store.state.user.userInfo.user_name
+
+  if (token) {
+    if (to.path === '/login') {
+      // 用户已经登录，还想去login(禁止，并停留在首页)
+      next('/')
+    } else {
+      // 用户已经登录，去非login页面
+      if (username) {
+        // 如果用户名已存在，放行
+        next()
+      } else {
+        // 如果用户名不存在，派发action让仓库存储用户信息再放行
+        try {
+          // 获取用户信息成功
+          await store.dispatch('getUserInfo')
+          // 放行
+          next()
+        } catch (error) {
+          // 登录成功，但是未获取到用户名，说明token过期了，需要重新登录
+          // 清除token
+          // await store.dispatch('userLlogout')
+          next('/login')
+        }
+      }
+    }
+  } else {
+    next()
+  }
 })
 
 export default router
