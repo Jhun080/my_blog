@@ -23,7 +23,14 @@
             </template>
           </el-input> -->
           <!-- 登录按钮 -->
-          <!-- <div class="login" @click="toLogin">登录</div> -->
+          <div class="login" v-if="userInfo.user_name==null" @click="toLogin">登录</div>
+          <!-- 用户信息区 -->
+          <div class="user-info" v-if="userInfo.user_name!=null">
+            <img :src="userIcon" class="user-icon">
+            <div class='user-name'>欢迎你：{{ userInfo.user_name }}</div>
+          </div>
+          <!-- 退出登录按钮 -->
+          <div class="loginout" v-if="userInfo.user_name!=null" @click="loginOut">退出登录</div>
           <!-- 后台管理按钮-->
           <!-- <div class="toManage" @click="toManage">后台管理</div> -->
         </div>
@@ -43,6 +50,12 @@ export default {
   computed: {
     tab () {
       return this.$route.name
+    },
+    userInfo () {
+      return this.$store.state.user.userInfo || {}
+    },
+    userIcon () {
+      return `http://cdn-blog-resource.huecmx.xyz/userIcon/${this.userInfo.user_icon}` || ''
     }
   },
   methods: {
@@ -53,12 +66,26 @@ export default {
     onSubmit () {
       return false
     },
-    seek () {
-      if (this.search) {
-        this.$router.push({ path: '/list', query: { search: this.search } })
-        this.search = ''
-      }
+    // 退出登录
+    loginOut () {
+      this.$confirm('确定要退出登陆吗？').then(async () => {
+        // 退出登陆
+        const result = await this.$store.dispatch('userLogout', this.userInfo)
+        if (result.code === 200) {
+          this.$message.success('退出登陆成功!')
+        } else {
+          this.$message.error('退出登陆失败!')
+        }
+      }).catch(() => {
+
+      })
     },
+    // seek () {
+    //   if (this.search) {
+    //     this.$router.push({ path: '/list', query: { search: this.search } })
+    //     this.search = ''
+    //   }
+    // },
     // 跳转至登录界面
     toLogin () {
       this.$router.push('/login')
@@ -91,7 +118,7 @@ header {
   color: white;
   width: 100vw;
   height: 40px;
-  opacity: 0.8;
+
   .header-left {
     line-height: 40px;
     li {
@@ -137,6 +164,22 @@ header {
       transition: all .5s;
     }
 
+    .loginout {
+      margin-left: 10px;
+      width: 70px;
+      line-height: 40px;
+      font-size: 14px;
+      text-align: center;
+      cursor: pointer;
+      transition: all .5s;
+    }
+
+    .loginout:hover{
+      color:white;
+      filter: invert(100%);
+      transition: all .5s;
+    }
+
     .toManage {
       margin-left: 10px;
       width: 100px;
@@ -147,6 +190,24 @@ header {
       color:rgb(144, 147, 148);
       cursor: pointer;
       transition: all .5s;
+    }
+
+    .user-info{
+      display: flex;
+      flex-wrap: nowrap;
+      justify-content: center;
+      .user-icon{
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+
+      }
+
+      .user-name{
+        line-height: 40px;
+        margin-left: 10px;
+      }
+
     }
   }
 }
