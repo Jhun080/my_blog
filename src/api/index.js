@@ -3,10 +3,12 @@ import * as article from './article.js'
 import * as classification from './classification.js'
 import * as qiniu from './qiniu.js'
 import * as user from './user.js'
+import * as comment from './comment.js'
 
 export default {
   ...article,
   ...classification,
   ...qiniu,
-  ...user
+  ...user,
+  ...comment
 }
