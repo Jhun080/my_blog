@@ -8,7 +8,7 @@
           <ul>
             <li :class="{active:tab=='Home'}" @click="toHome"><i class="el-icon-s-shop"></i>首页</li>
             <li :class="{active:tab=='Archive'}" @click="toArchive"><i class="el-icon-s-order"></i>归档</li>
-            <li><i class="el-icon-s-comment"></i>留言</li>
+            <li :class="{active:tab=='MessageBoard'}" @click="toMessageBoard"><i class="el-icon-s-comment"></i>留言板</li>
             <li><i class="el-icon-user-solid"></i>关于</li>
             <li><i class="el-icon-s-help"></i>占位</li>
             <li><i class="el-icon-s-help"></i>占位</li>
@@ -24,6 +24,8 @@
           </el-input> -->
           <!-- 登录按钮 -->
           <div class="login" v-if="userInfo.user_name==null" @click="toLogin">登录</div>
+          <!-- 注册按钮 -->
+          <div class="register" v-if="userInfo.user_name==null" @click="toRegister">注册</div>
           <!-- 用户信息区 -->
           <div class="user-info" v-if="userInfo.user_name!=null">
             <img :src="userIcon" class="user-icon">
@@ -80,15 +82,13 @@ export default {
 
       })
     },
-    // seek () {
-    //   if (this.search) {
-    //     this.$router.push({ path: '/list', query: { search: this.search } })
-    //     this.search = ''
-    //   }
-    // },
     // 跳转至登录界面
     toLogin () {
       this.$router.push('/login')
+    },
+    // 跳转至注册界面
+    toRegister () {
+      this.$router.push('/register')
     },
     // 跳转至后台管理
     toManage () {
@@ -101,6 +101,10 @@ export default {
     // 跳转至归档
     toArchive () {
       this.$router.push('/main/archive')
+    },
+    // 跳转至留言板
+    toMessageBoard () {
+      this.$router.push('/main/messageboard')
     }
   }
 }
@@ -159,6 +163,18 @@ header {
     }
 
     .login:hover{
+      color:rgb(144, 147, 148);
+      cursor: pointer;
+      transition: all .5s;
+    }
+
+    .register {
+      margin-left: 10px;
+      width: 50px;
+      text-align: center;
+    }
+
+    .register:hover{
       color:rgb(144, 147, 148);
       cursor: pointer;
       transition: all .5s;
