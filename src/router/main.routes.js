@@ -22,6 +22,11 @@ export default {
       path: 'archive',
       name: 'Archive',
       component: () => import('@/views/Archive/Archive.vue')
+    },
+    {
+      path: 'messageboard',
+      name: 'MessageBoard',
+      component: () => import('@/views/MessageBoard/MessageBoard.vue')
     }
   ]
 }
