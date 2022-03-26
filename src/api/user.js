@@ -40,3 +40,17 @@ export const reqLogout = (params) => {
     data: params
   })
 }
+
+/*
+  注册用户
+  /user/register
+  post
+  参数：无
+*/
+export const reqRegister = (params) => {
+  return requests({
+    url: '/user/register',
+    method: 'post',
+    data: params
+  })
+}
