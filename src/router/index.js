@@ -77,31 +77,32 @@ router.beforeEach(async (to, from, next) => {
   // 用户登录了才会有token，未登录不会有token
   const token = store.state.user.token
   // 用户信息:用户名
-  const username = store.state.user.userInfo.user_name
+  const username = store.getters.username
 
   if (token) {
-    if (to.path === '/login') {
-      // 用户已经登录，还想去login(禁止，并停留在首页)
-      next('/')
-    } else {
-      // 用户已经登录，去非login页面
-      if (username) {
-        // 如果用户名已存在，放行
-        next()
-      } else {
-        // 如果用户名不存在，派发action让仓库存储用户信息再放行
-        try {
-          // 获取用户信息成功
-          await store.dispatch('getUserInfo')
-          // 放行
-          next()
-        } catch (error) {
-          // 登录成功，但是未获取到用户名，说明token过期了，需要重新登录
-          // 清除token
-          // await store.dispatch('userLlogout')
-          next('/login')
-        }
+    // 用于记录导航守卫中发请求获取到的用户信息
+    let userName
+    // 首先获取username
+    if (username === null) {
+      // 用户信息不存在，获取用户信息
+      try {
+        // 获取用户数据
+        await store.dispatch('getUserInfo')
+        // 如果userName还是空，说明用户token过期
+        userName = store.getters.username
+      } catch (error) {
+
       }
+    }
+    if (userName && to.path === '/login') {
+      // 用户已经登录，去login(阻止，并跳转至首页)
+      next('/')
+    } else if (!userName && to.path === '/login') {
+      // 用户未登录，去login，放行
+      next()
+    } else {
+      // 用户去非login界面，放行
+      next()
     }
   } else {
     next()
