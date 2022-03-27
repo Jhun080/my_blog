@@ -19,7 +19,7 @@ const mutations = {
   CLEAR (state) {
     // 仓库中相关用户数据清空
     state.token = ''
-    state.userInfo = ''
+    state.userInfo = {}
     // 本地存储数据清空
     removeToken()
   }
@@ -62,7 +62,13 @@ const actions = {
     }
   }
 }
-const getters = {}
+const getters = {
+  // 计算出的用户名
+  username (state) {
+    const userInfo = state.userInfo || {}
+    return userInfo.user_name || null
+  }
+}
 
 export default {
   state,
