@@ -39,3 +39,17 @@ export const reqGetCommentTotal = () => {
     method: 'get'
   })
 }
+
+/*
+  分页查询评论
+  /comment/findCommentPage
+  post
+  参数：
+*/
+export const reqGetCommentPage = (params) => {
+  return requests({
+    url: '/comment/findCommentPage',
+    method: 'post',
+    data: params
+  })
+}

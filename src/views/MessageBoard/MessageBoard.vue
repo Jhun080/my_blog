@@ -18,7 +18,7 @@
       </div>
       <div class="message-box">
         <div class="message-title">
-          ▎活捉 {{ totalComment }} 条留言
+          ▎活捉 {{ total }} 条留言
         </div>
         <!-- 顶部的分割线 -->
         <el-divider></el-divider>
@@ -39,7 +39,18 @@
           <!-- 顶部的分割线 -->
           <el-divider></el-divider>
         </div>
-
+        <!-- 分页栏 -->
+        <div class="comment-pagination">
+          <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage"
+            :page-sizes="pageSizes"
+            :page-size="pageSize"
+            layout="prev, pager, next, sizes, jumper"
+            :total="total">
+          </el-pagination>
+        </div>
       </div>
     </div>
   </div>
@@ -56,17 +67,23 @@ export default {
       comment_source: '留言板',
       // 发送按钮中显示的内容
       submitMessage: '发送~',
-      // 评论总条数
-      totalComment: 0,
       // 评论数据
-      commentData: []
+      commentData: [],
+      // 评论总条数
+      total: 0,
+      // 当前页码
+      currentPage: 1,
+      // 每页显示条数
+      pageSize: 10,
+      // 每页显示条数候选
+      pageSizes: [10, 15, 20],
+      // 查询条件
+      query: ''
     }
   },
   mounted () {
-    // 重新获取评论总条数
-    this.getCommentTotal()
-    // 查询全部评论
-    this.getAllComment()
+    // 分页查询评论
+    this.getCommentPage()
   },
   methods: {
     // 查询全部评论
@@ -74,6 +91,18 @@ export default {
       const result = await this.$API.reqGetAllComment()
       if (result.code === 200) {
         this.commentData = result.data
+      }
+    },
+    // 分页查询评论
+    async getCommentPage () {
+      const result = await this.$API.reqGetCommentPage({
+        currentPage: this.currentPage,
+        pageSize: this.pageSize,
+        query: this.query
+      })
+      if (result.code === 200) {
+        this.commentData = result.data.rows
+        this.total = result.data.total
       }
     },
     // 新增评论
@@ -92,20 +121,31 @@ export default {
         this.$message.success('留言成功~')
         // 清空评论内容
         this.comment_text = ''
-        // 重新获取评论总条数
-        this.getCommentTotal()
         // 重新查询评论数据
-        this.getAllComment()
+        this.getCommentPage()
       } else {
         this.$message.warning('留言失败-_-！')
       }
+      this.submitMessage = '发送~'
     },
     // 获取评论总条数
     async getCommentTotal () {
       const result = await this.$API.reqGetCommentTotal()
       if (result.code === 200) {
-        this.totalComment = result.data
+        this.total = result.data
       }
+    },
+    // 分页栏页码改变事件
+    handleCurrentChange (val) {
+      this.currentPage = val
+      // 分页查询
+      this.getCommentPage()
+    },
+    // 分页栏每页显示条数修改事件
+    handleSizeChange (val) {
+      this.pageSize = val
+      // 分页查询
+      this.getCommentPage()
     }
   }
 }
@@ -253,6 +293,13 @@ export default {
 
         }
       }
+
+      .comment-pagination{
+        display: flex;
+        justify-content: center;
+        margin-top: 10px;
+      }
+
     }
   }
 }
