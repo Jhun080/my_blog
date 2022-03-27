@@ -53,3 +53,16 @@ export const reqGetCommentPage = (params) => {
     data: params
   })
 }
+
+/*
+  通过评论id删除评论
+  /comment/deleteComment
+  get
+  参数：评论id
+*/
+export const reqDeleteComment = (commentId) => {
+  return requests({
+    url: `/comment/deleteComment?commentId=${commentId}`,
+    method: 'get'
+  })
+}
