@@ -6,7 +6,7 @@ export default {
   children: [
     {
       path: '/',
-      redirect: 'home'
+      redirect: 'messageboard'
     },
     {
       path: 'home',
