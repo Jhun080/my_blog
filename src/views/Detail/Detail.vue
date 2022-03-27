@@ -70,7 +70,6 @@ export default {
   border-right: 50px solid white;
   border-radius: 20px;
   opacity: 1;
-  .markdown-body {
-  }
+
 }
 </style>
