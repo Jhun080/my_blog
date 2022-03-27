@@ -28,6 +28,7 @@
             <img :src="`http://cdn-blog-resource.huecmx.xyz/userIcon/${comment.user.user_icon}`" class="user-icon">
             <div class="message-info">
               <div class="user-info">
+                <div v-if="$store.getters.username=='jhun'" class="delete"><el-button type="danger" size="mini" @click="deleteComment(comment)">删除</el-button></div>
                 <div class="user-name">{{ comment.user.user_name }}</div>
                 <div class="comment-time">{{ $dayjs(comment.comment_time).format('YYYY-MM-DD HH:mm:ss') }}</div>
               </div>
@@ -127,6 +128,21 @@ export default {
         this.$message.warning('留言失败-_-！')
       }
       this.submitMessage = '发送~'
+    },
+    // 删除评论
+    deleteComment (comment) {
+      this.$confirm('确定要删除该评论吗？').then(async () => {
+        const result = await this.$API.reqDeleteComment(comment.comment_id)
+        if (result.code === 200) {
+          this.$message.success(result.message)
+        } else {
+          this.$message.error(result.message)
+        }
+        // 重新查询评论数据
+        this.getCommentPage()
+      }).catch(() => {
+
+      })
     },
     // 获取评论总条数
     async getCommentTotal () {
@@ -272,6 +288,11 @@ export default {
           padding-bottom: 10px;
 
           .user-info{
+
+            .delete{
+              position: absolute;
+              left:50vw;
+            }
 
             .user-name{
               font-size: 14px;
