@@ -12,3 +12,31 @@ export const reqGetDirectory = () => {
     method: 'get'
   })
 }
+
+/*
+  上传预览图片
+  /qiniu/uploadPreviewImage
+  post
+  参数：
+*/
+export const reqUploadPreviewImage = (params) => {
+  return requests({
+    url: '/qiniu/uploadPreviewImage',
+    method: 'post',
+    data: params
+  })
+}
+
+/*
+  上传用户头像图片
+  /qiniu/uploadImage
+  post
+  参数：
+*/
+export const reqUploadImage = (params) => {
+  return requests({
+    url: '/qiniu/uploadImage',
+    method: 'post',
+    data: params
+  })
+}

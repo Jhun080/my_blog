@@ -25,7 +25,7 @@
         <!-- 留言区 -->
         <div v-for="comment in commentData" :key="comment.comment_id">
           <div class="message" >
-            <img :src="`http://cdn-blog-resource.huecmx.xyz/userIcon/${comment.user.user_icon}`" class="user-icon">
+            <img :src="`http://cdn-blog-resource.huecmx.xyz/userIcon/${comment.user.user_icon}?imageView2/1/w/200/h/200/q/100`" class="user-icon">
             <div class="message-info">
               <div class="user-info">
                 <div v-if="$store.getters.username=='jhun'" class="delete"><el-button type="danger" size="mini" @click="deleteComment(comment)">删除</el-button></div>
