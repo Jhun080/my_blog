@@ -28,7 +28,21 @@
           <div class="register" v-if="userInfo.user_name==null" @click="toRegister">注册</div>
           <!-- 用户信息区 -->
           <div class="user-info" v-if="userInfo.user_name!=null">
-            <img :src="userIcon" class="user-icon">
+            <div class="user-icon">
+              <!-- 头像 -->
+              <img :src="userIcon" class="icon">
+              <!-- 头像下拉菜单 -->
+              <div class="menu">
+                <div class="menu-item" @click="dialogVisible=true">
+                  <li class="el-icon-s-custom">&nbsp;&nbsp;修改头像</li>
+                  <li class="el-icon-arrow-right"></li>
+                </div>
+                <div class="menu-item" @click="loginOut">
+                  <li class="el-icon-error">&nbsp;&nbsp;退出登录</li>
+                  <li class="el-icon-arrow-right"></li>
+                </div>
+              </div>
+            </div>
             <div class='user-name'>欢迎你：{{ userInfo.user_name }}</div>
           </div>
           <!-- 退出登录按钮 -->
@@ -38,6 +52,29 @@
         </div>
       </div>
     </header>
+
+    <el-dialog
+      title="修改用户头像"
+      :visible.sync="dialogVisible"
+      width="30%">
+      <!-- 图片上传 -->
+      <!-- :on-success="handleAvatarSuccess"
+        :before-upload="beforeAvatarUpload" -->
+      <el-upload
+        class="avatar-uploader"
+        action="none"
+        :auto-upload='false'
+        :show-file-list="false"
+        :on-change="uploadImage">
+        <img v-if="imageUrl" :src="imageUrl" class="avatar">
+        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+      </el-upload>
+
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="editUserIcon">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -46,7 +83,13 @@ export default {
   data () {
     return {
       search: '',
-      query: ''
+      query: '',
+      // 弹出框显示状态
+      dialogVisible: false,
+      // 要保存的文件
+      imgFile: null,
+      // 图片上传后的名字
+      imgName: ''
     }
   },
   computed: {
@@ -57,7 +100,14 @@ export default {
       return this.$store.state.user.userInfo || {}
     },
     userIcon () {
-      return `http://cdn-blog-resource.huecmx.xyz/userIcon/${this.userInfo.user_icon}` || ''
+      return `http://cdn-blog-resource.huecmx.xyz/userIcon/${this.userInfo.user_icon}?imageView2/1/w/200/h/200/q/100` || ''
+    },
+    // 预览图片路径
+    imageUrl () {
+      if (this.imgName !== '') {
+        return `http://cdn-blog-resource.huecmx.xyz/imageCache/${this.imgName}`
+      }
+      return ''
     }
   },
   methods: {
@@ -82,6 +132,71 @@ export default {
 
       })
     },
+    // 修改用户头像
+    async editUserIcon () {
+      // 判断用户是否上传了图片
+      if (this.imgName && this.imgFile) {
+        // 用户已经上传了图片
+        const formData = new FormData()
+        formData.append('imgFile', this.imgFile.raw)
+        formData.append('fileName', this.imgName)
+        formData.append('user_id', this.$store.state.user.userInfo.user_id)
+        const result = await this.$API.reqUploadImage(formData)
+        if (result.code === 200) {
+          this.imgName = result.data
+          this.$message.success('头像修改成功')
+          // 初始化
+          this.imgName = ''
+          this.imgFile = null
+          // 重新获取用户数据
+          await this.$store.dispatch('getUserInfo')
+          // 关闭对话框
+          this.dialogVisible = false
+        } else {
+          this.$message.error('头像修改失败')
+        }
+      }
+    },
+    // 上传图片
+    async uploadImage (file) {
+      if (this.beforeAvatarUpload(file.raw)) {
+        // 文件校验通过
+        // 记录用户上传的图片文件
+        this.imgFile = file
+        const formData = new FormData()
+        formData.append('imgFile', file.raw)
+        const result = await this.$API.reqUploadPreviewImage(formData)
+        if (result.code === 200) {
+          this.imgName = result.data
+          this.$message.success('图片上传成功')
+        } else {
+          this.$message.error('图片上传失败')
+        }
+      }
+    },
+    // 上传成功时执行
+    handleAvatarSuccess (res, file) {
+      this.imageUrl = `http://cdn-blog-resource.huecmx.xyz/imageCache/${res.data}`
+      this.$message({
+        type: res.flag ? 'success' : 'error',
+        message: res.message
+      })
+    },
+    // 上传之前执行
+    beforeAvatarUpload (file) {
+      const isJPGOrPNG = file.type === 'image/jpeg' || file.type === 'image/png'
+      const isLt2M = file.size / 1024 / 1024 < 2
+
+      if (!isJPGOrPNG) {
+        this.$message.error('上传图片只能是 JPG 或 PNG 格式!')
+        return isJPGOrPNG && isLt2M
+      }
+      if (!isLt2M) {
+        this.$message.error('上传图片大小不能超过 2MB!')
+        return isJPGOrPNG && isLt2M
+      }
+      return isJPGOrPNG && isLt2M
+    },
     // 跳转至登录界面
     toLogin () {
       this.$router.push('/login')
@@ -96,7 +211,7 @@ export default {
     },
     // 跳转至首页
     toHome () {
-      this.$router.push('/')
+      this.$router.push('/main/home')
     },
     // 跳转至归档
     toArchive () {
@@ -110,8 +225,6 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-header {
-}
 .header {
   position: fixed;
   z-index: 1;
@@ -212,10 +325,62 @@ header {
       display: flex;
       flex-wrap: nowrap;
       justify-content: center;
+
       .user-icon{
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
+        .icon{
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+        }
+
+        .icon:hover + .menu{
+          visibility: visible;
+          opacity: 1;
+          transition: all .5s;
+        }
+
+        .menu{
+          position: absolute;
+          visibility: hidden;
+          opacity: 0;
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          transform: translate(-130px,-15px);
+          width: 300px;
+          min-height: 10px;
+          padding: 20px 0px;
+          border-radius: 10px;
+          background-color: white;
+          transition: all .5s;
+
+          .menu-item{
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: space-between;
+            width: calc(100% - 80px);
+            height: 40px;
+            padding: 0px 15px;
+            border-radius: 10px;
+            color: rgb(97,102,109);
+            cursor: pointer;
+
+            *{
+              line-height: 40px;
+            }
+          }
+
+          .menu-item:hover{
+            background-color: rgb(227,229,231);
+            transition: all .5s;
+          }
+        }
+
+        .menu:hover{
+          visibility: visible;
+          opacity: 1;
+          transition: all .5s;
+        }
 
       }
 
@@ -226,5 +391,34 @@ header {
 
     }
   }
+}
+
+// 图片上传组件样式
+.avatar-uploader{
+  display: flex;
+  justify-content: center;
+}
+/deep/.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+/deep/.avatar-uploader .el-upload:hover {
+  border-color: #409EFF;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
 }
 </style>
