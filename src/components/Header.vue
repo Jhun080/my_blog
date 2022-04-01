@@ -184,15 +184,16 @@ export default {
     },
     // 上传之前执行
     beforeAvatarUpload (file) {
-      const isJPGOrPNG = file.type === 'image/jpeg' || file.type === 'image/png'
-      const isLt2M = file.size / 1024 / 1024 < 2
+      console.log(file)
+      const isJPGOrPNG = file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'image/gif'
+      const isLt2M = file.size / 1024 / 1024 < 8
 
       if (!isJPGOrPNG) {
         this.$message.error('上传图片只能是 JPG 或 PNG 格式!')
         return isJPGOrPNG && isLt2M
       }
       if (!isLt2M) {
-        this.$message.error('上传图片大小不能超过 2MB!')
+        this.$message.error('上传图片大小不能超过 8MB!')
         return isJPGOrPNG && isLt2M
       }
       return isJPGOrPNG && isLt2M
