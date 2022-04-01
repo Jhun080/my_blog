@@ -2,7 +2,7 @@
 <template>
  <div>
    <UserInfo></UserInfo>
-   <ClassifyInfo></ClassifyInfo>
+   <ClassifyInfo v-show="tab=='Home'"></ClassifyInfo>
  </div>
 </template>
 
@@ -19,6 +19,12 @@ export default {
   data () {
     return {
 
+    }
+  },
+  computed: {
+    // 当前路由名name
+    tab () {
+      return this.$route.name
     }
   }
 
