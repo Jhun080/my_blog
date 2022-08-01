@@ -65,9 +65,6 @@ export default {
   background-color: rgb(31, 30, 30);
   transition: all 0.5s;
 
-  .time-nav {
-  }
-
   .record-num {
     width: 100%;
     margin: 5px 0px;
